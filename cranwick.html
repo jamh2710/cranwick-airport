@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethanburgh Cranwick Airport | ECR</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fa;
+      color: #172033;
+      line-height: 1.6;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #07111f;
+      color: white;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+    }
+
+    .nav {
+      max-width: 1250px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+    }
+
+    .logo {
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 20px;
+    }
+
+    .logo span {
+      color: #62b4ff;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: #dce8f5;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #62b4ff;
+    }
+
+    .hero {
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(rgba(3, 13, 26, 0.58), rgba(3, 13, 26, 0.72)),
+        url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=85")
+        center/cover;
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 1250px;
+      width: 100%;
+      margin: auto;
+      padding: 70px 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 0.95;
+      max-width: 850px;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      max-width: 700px;
+      font-size: 19px;
+      color: #d9e5f2;
+    }
+
+    .hero-buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 20px;
+      border-radius: 9px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: #62b4ff;
+      color: #07111f;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    section {
+      max-width: 1250px;
+      margin: auto;
+      padding: 75px 22px;
+    }
+
+    section h2 {
+      font-size: 34px;
+      margin-bottom: 12px;
+    }
+
+    .section-intro {
+      color: #657085;
+      max-width: 750px;
+      margin-bottom: 30px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 24px;
+      box-shadow: 0 5px 20px rgba(20, 35, 55, 0.08);
+      border: 1px solid #e6ebf1;
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: #667085;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #eaf4ff;
+      color: #1477c9;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .flight-board {
+      background: #07111f;
+      color: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+
+    .flight-controls {
+      display: flex;
+      gap: 10px;
+      padding: 18px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #203044;
+    }
+
+    .flight-controls button,
+    .flight-controls input {
+      padding: 11px 14px;
+      border-radius: 8px;
+      border: 1px solid #34465c;
+      background: #101d2e;
+      color: white;
+    }
+
+    .flight-controls button {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .flight-controls button.active {
+      background: #62b4ff;
+      color: #07111f;
+    }
+
+    .flight-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .flight-table th,
+    .flight-table td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid #203044;
+    }
+
+    .flight-table th {
+      color: #91a7bd;
+      font-size: 13px;
+    }
+
+    .status {
+      font-weight: 700;
+    }
+
+    .on-time {
+      color: #65d69b;
+    }
+
+    .boarding {
+      color: #ffd166;
+    }
+
+    .terminal-card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: white;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .terminal-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    }
+
+    .terminal-card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .terminal-t1 {
+      background-image: url("https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .terminal-t2 {
+      background-image: url("https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .terminal-domestic {
+      background-image: url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80");
+    }
+
+    .info-box {
+      background: #eaf4ff;
+      border-left: 5px solid #2188d8;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 25px;
+    }
+
+    .parking-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(20, 35, 55, 0.08);
+    }
+
+    .parking-table th,
+    .parking-table td {
+      padding: 17px;
+      border-bottom: 1px solid #e7ebf0;
+      text-align: left;
+    }
+
+    .parking-table th {
+      background: #07111f;
+      color: white;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .media-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(20, 35, 55, 0.08);
+      border: 1px solid #e6ebf1;
+    }
+
+    .media-card img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-card-content {
+      padding: 18px;
+    }
+
+    .media-card-content p {
+      color: #667085;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #07111f;
+      color: #aebdcd;
+      padding: 45px 22px;
+      text-align: center;
+    }
+
+    footer strong {
+      color: white;
+    }
+
+    @media (max-width: 800px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      nav {
+        gap: 10px;
+      }
+
+      .flight-table {
+        font-size: 13px;
+      }
+
+      .flight-table th:nth-child(5),
+      .flight-table td:nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">ECR <span>ETHANBURGH CRANWICK</span></div>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#flights">Flights</a>
+      <a href="#terminals">Terminals</a>
+      <a href="#airlines">Airlines</a>
+      <a href="#parking">Parking</a>
+      <a href="#security">Security</a>
+      <a href="#ees">EES</a>
+      <a href="#shops">Shops & Dining</a>
+      <a href="#services">Services</a>
+      <a href="#transport">Transport</a>
+      <a href="#explore">Explore</a>
+      <a href="#media">Media</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Ethanburgh Cranwick Airport</h1>
+
+      <p>
+        Jamhia's major international gateway and the home of Jamh Airlines.
+        Modern terminals, global connections and direct access to Ethanburgh.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#flights" class="btn btn-primary">View flights</a>
+        <a href="#terminals" class="btn btn-secondary">Explore terminals</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="flights">
+    <h2>Flights</h2>
+    <p class="section-intro">
+      Check today's example departures and arrivals at Ethanburgh Cranwick.
+    </p>
+
+    <div class="flight-board">
+      <div class="flight-controls">
+        <button class="flight-tab active" data-type="all">All</button>
+        <button class="flight-tab" data-type="departure">Departures</button>
+        <button class="flight-tab" data-type="arrival">Arrivals</button>
+        <input id="flightSearch" type="text" placeholder="Search flight or destination">
+      </div>
+
+      <table class="flight-table">
+        <thead>
+          <tr>
+            <th>Flight</th>
+            <th>Airline</th>
+            <th>Destination</th>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody id="flightRows">
+          <tr data-type="departure">
+            <td>JA101</td>
+            <td>Jamh Airlines</td>
+            <td>Dubai</td>
+            <td>08:30</td>
+            <td>Departure</td>
+            <td class="status on-time">On time</td>
+          </tr>
+
+          <tr data-type="departure">
+            <td>BA421</td>
+            <td>British Airways</td>
+            <td>London Heathrow</td>
+            <td>09:15</td>
+            <td>Departure</td>
+            <td class="status boarding">Boarding</td>
+          </tr>
+
+          <tr data-type="arrival">
+            <td>EK201</td>
+            <td>Emirates</td>
+            <td>Dubai</td>
+            <td>10:05</td>
+            <td>Arrival</td>
+            <td class="status on-time">On time</td>
+          </tr>
+
+          <tr data-type="departure">
+            <td>AF184</td>
+            <td>Air France</td>
+            <td>Paris CDG</td>
+            <td>11:20</td>
+            <td>Departure</td>
+            <td class="status on-time">On time</td>
+          </tr>
+
+          <tr data-type="arrival">
+            <td>LH732</td>
+            <td>Lufthansa</td>
+            <td>Frankfurt</td>
+            <td>12:10</td>
+            <td>Arrival</td>
+            <td class="status on-time">On time</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="terminals">
+    <h2>Terminals</h2>
+    <p class="section-intro">
+      Cranwick uses three terminal areas for international, partner and domestic operations.
+    </p>
+
+    <div class="card-grid">
+      <div class="card terminal-card terminal-t1">
+        <div class="terminal-card-content">
+          <h3>Terminal 1</h3>
+          <p>Foreign and non-partner airlines.</p>
+        </div>
+      </div>
+
+      <div class="card terminal-card terminal-t2">
+        <div class="terminal-card-content">
+          <h3>Terminal 2</h3>
+          <p>Exclusively for Jamh Airlines and partner airlines.</p>
+        </div>
+      </div>
+
+      <div class="card terminal-card terminal-domestic">
+        <div class="terminal-card-content">
+          <h3>Domestic Terminal</h3>
+          <p>Domestic flights within Jamhia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Jetbridges:</strong>
+      Cranwick uses enclosed, windowless jetbridges for passenger boarding.
+    </div>
+  </section>
+
+  <section id="airlines">
+    <h2>Airlines</h2>
+    <p class="section-intro">
+      Airlines operating at Ethanburgh Cranwick include Jamhian carriers and international airlines.
+    </p>
+
+    <div class="card-grid">
+
+      <div class="card"><h3>Jamh Airlines</h3><p>Jamhia's main international airline.</p><span class="tag">Terminal 2</span></div>
+      <div class="card"><h3>Jamh Airlines City Connect</h3><p>Domestic Jamhian services.</p><span class="tag">Domestic</span></div>
+
+      <div class="card"><h3>British Airways</h3><p>International services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Air France</h3><p>Services to France and beyond.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Lufthansa</h3><p>German and European connections.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>KLM</h3><p>Services to the Netherlands.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Turkish Airlines</h3><p>Connections through Istanbul.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Iberia</h3><p>Services to Spain.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>TAP Air Portugal</h3><p>Portuguese and international connections.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>SWISS</h3><p>Services to Switzerland.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>SAS</h3><p>Scandinavian services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>easyJet</h3><p>European low-cost services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Wizz Air</h3><p>European and international services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Aer Lingus</h3><p>Irish and international services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Finnair</h3><p>Services to Finland.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>LOT Polish Airlines</h3><p>Services to Poland.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Austrian Airlines</h3><p>Services to Austria.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Brussels Airlines</h3><p>Services to Belgium.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Vueling</h3><p>Spanish and European services.</p><span class="tag">Terminal 1</span></div>
+      <div class="card"><h3>Philippine Airlines</h3><p>Long-haul services to the Philippines.</p><span class="tag">Terminal 1</span></div>
+
+    </div>
+  </section>
+
+  <section id="parking">
+    <h2>Parking</h2>
+    <p class="section-intro">
+      Cranwick has Short Stay, Medium Stay and Long Stay parking.
+    </p>
+
+    <table class="parking-table">
+      <thead>
+        <tr>
+          <th>Car park</th>
+          <th>Maximum / intended stay</th>
+          <th>Shuttle information</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Short Stay</td>
+          <td>Up to 3 days</td>
+          <td>Direct terminal access</td>
+        </tr>
+
+        <tr>
+          <td>Medium Stay</td>
+          <td>Up to 5 days</td>
+          <td>Terminal access available</td>
+        </tr>
+
+        <tr>
+          <td>Long Stay</td>
+          <td>7 days or more</td>
+          <td>Shuttle serves Terminal 2 first, then Terminal 1</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>Delayed flights:</strong>
+      If a flight is delayed and arrives a day later than scheduled, the permitted parking period is extended accordingly.
+    </div>
+  </section>
+
+  <section id="security">
+    <h2>Security</h2>
+    <p class="section-intro">
+      Cranwick security uses modern screening procedures designed to keep passenger processing efficient.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Liquids</h3>
+        <p>Passengers can take liquids through security in containers up to 2 litres.</p>
+      </div>
+
+      <div class="card">
+        <h3>Screening</h3>
+        <p>Passengers and baggage are screened before entering the departures area.</p>
+      </div>
+
+      <div class="card">
+        <h3>Updated rules</h3>
+        <p>The previous smaller liquid-container restrictions were removed in June 2026.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ees">
+    <h2>European Entry/Exit System</h2>
+
+    <p class="section-intro">
+      Cranwick supports the European Entry/Exit System (EES), which digitally records
+      relevant entries and exits for travellers covered by the system.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Digital records</h3>
+        <p>Travel movements covered by EES are recorded digitally rather than relying only on passport stamps.</p>
+      </div>
+
+      <div class="card">
+        <h3>Border control</h3>
+        <p>Automated border-control technology can be used where available.</p>
+      </div>
+
+      <div class="card">
+        <h3>European system</h3>
+        <p>EES is part of Europe's wider external-border management system.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="shops">
+    <h2>Shops & Dining</h2>
+    <p class="section-intro">
+      A mix of international brands and fictional Jamhian businesses can be found throughout Cranwick.
+    </p>
+
+    <div class="card-grid">
+
+      <div class="card"><h3>McDonald's</h3><p>Fast food and drinks.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>KFC</h3><p>Quick-service meals.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Pizza Hut</h3><p>Pizza and casual dining.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Starbucks</h3><p>Coffee and refreshments.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Costa Coffee</h3><p>Coffee, pastries and snacks.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Pret A Manger</h3><p>Sandwiches, salads and drinks.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Subway</h3><p>Made-to-order sandwiches.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Burger King</h3><p>Fast food and meals.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Krispy Kreme</h3><p>Doughnuts and coffee.</p><span class="tag">Food & Drink</span></div>
+      <div class="card"><h3>Kavren Coffee</h3><p>A fictional Jamhian coffee brand.</p><span class="tag">Jamhian</span></div>
+      <div class="card"><h3>Ethan & Co.</h3><p>A fictional Jamhian café and restaurant.</p><span class="tag">Jamhian</span></div>
+
+      <div class="card"><h3>T&T Urban</h3><p>A leading fictional Jamhian retailer.</p><span class="tag">Retail</span></div>
+      <div class="card"><h3>WHSmith</h3><p>Books, travel essentials and snacks.</p><span class="tag">Retail</span></div>
+      <div class="card"><h3>JD</h3><p>Sportswear and fashion.</p><span class="tag">Retail</span></div>
+      <div class="card"><h3>Boots</h3><p>Health, beauty and travel essentials.</p><span class="tag">Retail</span></div>
+
+      <div class="card">
+        <h3>World Duty Free</h3>
+        <p>Airport duty-free shopping across beauty, fragrances, confectionery, fashion and other categories.</p>
+        <span class="tag">Duty free</span>
+      </div>
+
+      <div class="card"><h3>Jamhia Travel Store</h3><p>Travel accessories and Jamhian souvenirs.</p><span class="tag">Jamhian</span></div>
+      <div class="card"><h3>Zentra Market</h3><p>A fictional Jamhian convenience and travel retailer.</p><span class="tag">Jamhian</span></div>
+
+      <div class="card">
+        <h3>Skyline Jamhia</h3>
+        <p>Aviation gifts, model airplanes, aircraft collectibles, clothing, books and Cranwick merchandise.</p>
+        <span class="tag">Aviation</span>
+      </div>
+
+      <div class="card"><h3>Veyra</h3><p>Fictional Jamhian fashion retailer.</p><span class="tag">Fashion</span></div>
+      <div class="card"><h3>AeroTech</h3><p>Fictional Jamhian electronics retailer.</p><span class="tag">Electronics</span></div>
+      <div class="card"><h3>The Body Shop</h3><p>Beauty and personal care.</p><span class="tag">Beauty</span></div>
+      <div class="card"><h3>LEGO Store</h3><p>LEGO sets and gifts.</p><span class="tag">Retail</span></div>
+
+    </div>
+  </section>
+
+  <section id="services">
+    <h2>Services</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Information desks</h3>
+        <p>Passenger assistance and airport information.</p>
+      </div>
+
+      <div class="card">
+        <h3>Accessible travel</h3>
+        <p>Accessibility assistance is available throughout the airport.</p>
+      </div>
+
+      <div class="card">
+        <h3>Wi-Fi</h3>
+        <p>Free airport Wi-Fi is available throughout the terminals.</p>
+      </div>
+
+      <div class="card">
+        <h3>Lounges</h3>
+        <p>Passenger lounges are available for eligible travellers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="transport">
+    <h2>Transport</h2>
+    <p class="section-intro">
+      Cranwick is connected to Ethanburgh and the surrounding area by public transport and road.
+    </p>
+
+    <div class="card-grid">
+
+      <div class="card">
+        <h3>Airport Express A2</h3>
+        <p>Ethanburgh → Cranwick Airport.</p>
+        <span class="tag">24/7</span>
+      </div>
+
+      <div class="card">
+        <h3>Airport Express A4</h3>
+        <p>Dublin → Cranwick Airport.</p>
+        <span class="tag">24/7</span>
+      </div>
+
+      <div class="card">
+        <h3>Jamh Rail</h3>
+        <p>Airport rail connections serving Cranwick.</p>
+        <span class="tag">Rail</span>
+      </div>
+
+      <div class="card">
+        <h3>Taxi & Ride-hailing</h3>
+        <p>Taxi services plus Uber and Bolt connections.</p>
+        <span class="tag">Road</span>
+      </div>
+
+      <div class="card">
+        <h3>Drop-off</h3>
+        <p>Dedicated passenger drop-off areas are available near the terminals.</p>
+        <span class="tag">Cars</span>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="explore">
+    <h2>Explore Cranwick</h2>
+    <p class="section-intro">
+      A look around the airport and its aviation environment.
+    </p>
+
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=1200&q=80" alt="Airport terminal">
+      <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80" alt="Passenger aircraft">
+      <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1200&q=80" alt="Airport interior">
+    </div>
+  </section>
+
+  <section id="media">
+    <h2>Media</h2>
+    <p class="section-intro">
+      Aviation and airport photography from Unsplash.
+    </p>
+
+    <div class="card-grid">
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1768069932701-8c70cbc1792b?auto=format&fit=crop&w=1400&q=85"
+          alt="Emirates Airbus A380 parked at an airport gate with a jetbridge">
+        <div class="media-card-content">
+          <h3>Emirates Airbus A380</h3>
+          <p>Emirates A380 parked at a gate with a jetbridge attached.</p>
+        </div>
+      </div>
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1517400508447-f8dd518b86db?auto=format&fit=crop&w=1400&q=85"
+          alt="Airport terminal">
+        <div class="media-card-content">
+          <h3>Terminal</h3>
+          <p>Airport terminal architecture and passenger facilities.</p>
+        </div>
+      </div>
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1400&q=85"
+          alt="Aircraft at an airport">
+        <div class="media-card-content">
+          <h3>Airport operations</h3>
+          <p>Aircraft and airport operations.</p>
+        </div>
+      </div>
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1400&q=85"
+          alt="Airport facilities">
+        <div class="media-card-content">
+          <h3>Passenger facilities</h3>
+          <p>Modern airport facilities and passenger areas.</p>
+        </div>
+      </div>
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&w=1400&q=85"
+          alt="Aircraft runway">
+        <div class="media-card-content">
+          <h3>Runway</h3>
+          <p>Aircraft movements around the airport.</p>
+        </div>
+      </div>
+
+      <div class="media-card">
+        <img
+          src="https://images.unsplash.com/photo-1474302770737-173ee21bab63?auto=format&fit=crop&w=1400&q=85"
+          alt="Aircraft at sunset">
+        <div class="media-card-content">
+          <h3>Evening operations</h3>
+          <p>Aircraft operations during the evening.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Ethanburgh Cranwick Airport</strong></p>
+  <p>ECR · Jamhia</p>
+  <p>© 2026 Ethanburgh Cranwick Airport. Fictional airport website.</p>
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll(".flight-tab");
+  const rows = document.querySelectorAll("#flightRows tr");
+  const search = document.getElementById("flightSearch");
+
+  let currentType = "all";
+
+  function updateFlights() {
+    const query = search.value.toLowerCase();
+
+    rows.forEach(row => {
+      const type = row.dataset.type;
+      const text = row.innerText.toLowerCase();
+
+      const matchesType =
+        currentType === "all" || type === currentType;
+
+      const matchesSearch =
+        text.includes(query);
+
+      row.style.display =
+        matchesType && matchesSearch ? "" : "none";
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      currentType = tab.dataset.type;
+      updateFlights();
+    });
+  });
+
+  search.addEventListener("input", updateFlights);
+</script>
+
+</body>
+</html>
